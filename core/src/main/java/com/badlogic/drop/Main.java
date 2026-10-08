@@ -1,26 +1,48 @@
 package com.badlogic.drop;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main implements ApplicationListener {
+    Texture backgroundTexture;
+    FitViewport viewport;
+    SpriteBatch spriteBatch;
+    Texture fogueteTexture;
+    Sprite fogueteSprite;
+
+    Rectangle fogueteRectangle;
+
+
+
     @Override
     public void create() {
-        // Prepare your application here.
+        backgroundTexture = new Texture("background.png");
+        fogueteTexture = new Texture("foguete.png");
+        spriteBatch = new SpriteBatch();
+        viewport = new FitViewport(25, 15);
+
+        fogueteSprite = new Sprite(fogueteTexture);
+        fogueteSprite.setSize(4,5);
+        fogueteRectangle = new Rectangle();
     }
 
     @Override
     public void resize(int width, int height) {
-        // If the window is minimized on a desktop (LWJGL3) platform, width and height are 0, which causes problems.
-        // In that case, we don't resize anything, and wait for the window to be a normal size before updating.
-        if(width <= 0 || height <= 0) return;
-
-        // Resize your application here. The parameters represent the new window size.
+        viewport.update(width, height, true);
     }
 
     @Override
     public void render() {
-        // Draw your application here.
+        input();
+        logic();
+        draw();
     }
 
     @Override
@@ -28,9 +50,35 @@ public class Main implements ApplicationListener {
         // Invoked when your application is paused.
     }
 
-    @Override
+    public void input() {
+
+    }
+
+    public void logic() {
+        float larguraMundo = viewport.getWorldWidth();
+        float alturaMundo = viewport.getWorldHeight();
+
+        float fogueteLargura = fogueteSprite.getWidth();
+        float fogueteAltura = fogueteSprite.getHeight();
+    }
+
+    public void draw() {
+        viewport.apply();
+        spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+        spriteBatch.begin();
+
+        float larguraMundo = viewport.getWorldWidth();
+        float alturaMundo = viewport.getWorldHeight();
+
+        spriteBatch.draw(backgroundTexture, 0, 0, larguraMundo, alturaMundo);
+        fogueteSprite.setPosition((viewport.getWorldWidth() - fogueteSprite.getWidth()) / 2, 0);
+        fogueteSprite.draw(spriteBatch);
+
+        spriteBatch.end();
+    }
+
     public void resume() {
-        // Invoked when your application is resumed after pause.
+
     }
 
     @Override
