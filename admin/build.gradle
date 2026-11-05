@@ -1,0 +1,38 @@
+
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = 'com.meteormath'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(26)
+    }
+}
+
+javafx {
+    version = '26.0.2'
+    modules = [
+        'javafx.controls',
+        'javafx.fxml'
+    ]
+}
+
+application {
+    mainClass = 'com.meteormath.admin.MainApp'
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
